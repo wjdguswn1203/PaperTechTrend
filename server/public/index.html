@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="PaperTechTrend - 원하는 논문 자료를 검색하세요" />
+    <title>PaperTechTrend</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body class="flex-container">
+    <header class="header">
+      <div class="logo">
+        <img src="./static/logo.jpg" alt="PaperTechTrend Logo"/>
+      </div>
+      <a href="./index.html">PaperTechTrend</a>
+    </header>
+    
+    <section class="search-section">
+      <h1 style="margin-bottom: 20px;">원하는 논문 자료를 검색하세요</h1>
+      <div class="search-bar">
+        <select id="search-type" style="padding-right: 10px;">
+          <option value="keyword">키워드 검색</option>
+          <option value="sentence">구어체 검색</option>
+        </select>
+        <input type="text" id="search-input" placeholder="원하는 논문 자료의 키워드를 입력하세요." />
+        <button type="button" id="search-button">검색</button>
+      </div>
+    </section>
+
+    <section class="functions">
+      <h1 class="function-title">Functions</h1>
+      <div class="function-list">
+        <div class="function-item">
+          <img src="./static/search.png" alt="Search Icon" width="120px"/>
+          <h3>Search for Pseudo-paper</h3>
+          <p>Search for similar papers based on your query</p>
+        </div>
+        <div class="function-item">
+          <img src="./static/robot.png" alt="Chatbot Icon" />
+          <h3>Q&A Chatbot</h3>
+          <p>Chatbot service available for paper queries</p>
+        </div>
+        <div class="function-item">
+          <img src="./static/mail.png" alt="Email Icon" />
+          <h3>Keyword Email Alert</h3>
+          <p>Set keyword alerts for papers of interest</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>@ Team</p>
+      <p>Jung_Heonju - email: wjdguswn0954@gmail.com</p>
+      <p>Song_yunju - email: raminicayes@gmail.com</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

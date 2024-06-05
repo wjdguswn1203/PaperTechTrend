@@ -1,0 +1,13 @@
+# secert
+.env
+secret.yaml
+
+# dependencies
+*/node_modules
+*/package-lock.json
+python/.venv
+python/__pycache__
+
+
+# db
+python/test.db
