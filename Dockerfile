@@ -2,7 +2,7 @@
 FROM node:16.20.2
 
 # step 2 : Package Install
-RUN apt -y update && apt -y upgrade && apt -y install git net-tools vim mysql-client
+RUN apt -y update && apt -y upgrade && apt -y install git net-tools vim
 
 # 작업 디렉토리 설정
 WORKDIR '/root'
