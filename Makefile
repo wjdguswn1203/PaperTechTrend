@@ -4,7 +4,7 @@ stop: delsvc deldep delpod
 build:
 	docker build -t nodejs .
 run:
-	docker run -it -d -p 8000:8000 --name nodejs --env-file .env nodejs
+	docker run -it -d -p 8000:8000 -p 8500:8500 --name nodejs --env-file .env nodejs
 exec:
 	docker exec -it nodejs /bin/bash
 logs:

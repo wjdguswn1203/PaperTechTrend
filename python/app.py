@@ -139,7 +139,7 @@ async def search_popular_keyword():
     results = []
     for keyword in new_keywords:
         try:
-            keyword_response = requests.get(f'http://{FASTAPI_URL1}:3500/getMeta?searchword={keyword}')
+            keyword_response = requests.get(f'{FASTAPI_URL1}/getMeta?searchword={keyword}')
             keyword_data = keyword_response.json()
             results.append({'keyword': keyword, 'length': len(keyword_data)})
         except Exception as e:

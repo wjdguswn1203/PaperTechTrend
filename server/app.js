@@ -89,7 +89,7 @@ app.get('/search', async (req, res) => {
 app.get('/searchColl', async (req, res) => {
     try {
         const searchWord = req.query.searchword;
-        const getColaResponse = await axios.get(`http://${FASTAPI_URL2}:3000/getColl?searchword=${searchWord}`);
+        const getColaResponse = await axios.get(`${FASTAPI_URL2}/getColl?searchword=${searchWord}`);
         const collData = getColaResponse.data;
 
         // 결과 렌더링
@@ -104,7 +104,7 @@ app.get('/searchColl', async (req, res) => {
 
 app.get('/savePopularKeyword', async (req, res) => {
     try {
-        const response = await axios.get(`http://${FASTAPI_URL2}:3000/searchPopularkeyord`);
+        const response = await axios.get(`${FASTAPI_URL2}/searchPopularkeyord`);
         const data = response.data.data; 
 
         const keywords = data.map(item => item.keyword);
