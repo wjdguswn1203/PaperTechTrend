@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejsapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejsapi
+  template:
+    metadata:
+      labels:
+        app: nodejsapi
+    spec:
+      containers:
+      - name: nodejsapi
+        image: wjdguswn1203/nodejsapi
+        ports:
+        - containerPort: 8000
+        - containerPort: 8500
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: nodejsapi-secret
+              key: DB_HOST
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: nodejsapi-secret
+              key: DB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: nodejsapi-secret
+              key: DB_PASSWORD
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: nodejsapi-secret
+              key: DB_NAME
+        - name: WCL_URL
+          valueFrom:
+            configMapKeyRef:
+              name: nodejsapi-secret
+              key: WCL_URL
+        - name: WCS_API_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: nodejsapi-secret
+              key: WCS_API_KEY
+        - name: HUGGINGFACE_APIKEY
+          valueFrom:
+            configMapKeyRef:
+              name: nodejsapi-secret
+              key: HUGGINGFACE_APIKEY
+        - name: PORT1
+          valueFrom:
+            configMapKeyRef:
+              name: nodejsapi-secret
+              key: PORT1
+        - name: PORT2
+          valueFrom:
+            configMapKeyRef:
+              name: nodejsapi-secret
+              key: PORT2
+        - name: NODE_URL1
+          valueFrom:
+            configMapKeyRef:
+              name: nodejsapi-secret
+              key: NODE_URL1
+        - name: NODE_URL2
+          valueFrom:
+            configMapKeyRef:
+              name: nodejsapi-secret
+              key: NODE_URL2
+        - name: FASTAPI_URL1
+          valueFrom:
+            configMapKeyRef:
+              name: nodejsapi-secret
+              key: FASTAPI_URL1
+        - name: FASTAPI_URL2
+          valueFrom:
+            configMapKeyRef:
+              name: nodejsapi-secret
+              key: FASTAPI_URL2

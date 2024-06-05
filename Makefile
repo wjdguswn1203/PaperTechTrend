@@ -32,6 +32,8 @@ appsvc:
 	kubectl apply -f service.yaml
 appsec:
 	kubectl apply -f secret.yaml
+appcon:
+	kubectl apply -f bastion-config.yaml
 getdep:
 	kubectl get deployment
 getsvc:

@@ -1,6 +1,7 @@
 # secert
 .env
 secret.yaml
+bastion-config.yaml
 
 # dependencies
 */node_modules
