@@ -1,6 +1,6 @@
-all: build run k8init appdep appsvc getdep getsvc getpod
-restart: delsvc deldep delpod appdep appsvc appsec getdep getsvc getpod
-stop: delsvc deldep delpod
+all: build run k8init appsec appdep appsvc getdep getsvc getpod
+restart: delsec delsvc deldep delpod appsec appdep appsvc appsec getdep getsvc getpod
+stop: delsec delsvc deldep delpod
 build:
 	docker build -t nodejs .
 run:
@@ -38,15 +38,19 @@ getsvc:
 	kubectl get svc -o wide
 getpod:
 	kubectl get pod -o wide
+getsec:
+	kubectl get secret -o wide
 delsvc:
-	kubectl delete svc nodejsapi 
+	kubectl delete svc nodejsapi-service 
 deldep:
 	kubectl delete deployment nodejsapi
+delsec:
+	kubectl delete secret nodejsapi-secret
 delpod:
 	kubectl get pod | grep nodejsapi | awk '{print $$1}' | xargs -I {} kubectl delete pod {} --force
 desdep:
 	kubectl describe deployment nodejsapi
 dessvc:
-	kubectl describe svc nodejsapi
+	kubectl describe svc nodejsapi-service
 despod:
 	kubectl describe pod nodejsapi
