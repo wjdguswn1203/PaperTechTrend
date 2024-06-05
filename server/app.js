@@ -62,7 +62,7 @@ app.get('/search', async (req, res) => {
     // 키워드 기반 검색
     if (searchType === 'keyword') {
         try {
-            const response = await axios.get(`${FASTAPI_URL1}/searchKeyword?type=${searchType}&searchword=${searchWord}`);
+            const response = await axios.get(`${NODE_URL1}/searchKeyword?type=${searchType}&searchword=${searchWord}`);
             res.render('search.ejs', response.data);
         } catch (error) {
             console.error(error);
@@ -74,7 +74,7 @@ app.get('/search', async (req, res) => {
     // 구어체 기반 검색
     else if (searchType === 'sentence') {
         try {
-            const response = await axios.get(`${FASTAPI_URL2}/searchColl?type=${searchType}&searchword=${searchWord}`);
+            const response = await axios.get(`${NODE_URL2}/searchColl?type=${searchType}&searchword=${searchWord}`);
             res.render('search.ejs', response.data);
         } catch (error) {
             console.error(error);
@@ -189,7 +189,7 @@ app.get('/selectRDS', async (req, res) => {
 // 하루마다 갱신하기
 schedule.scheduleJob('0 0 * * *', async () => {
     try {
-        await axios.get(`${FASTAPI_URL2}/savePopularKeyword`);
+        await axios.get(`${NODE_URL2}/savePopularKeyword`);
         console.log('Scheduled task executed successfully');
     } catch (error) {
         console.error('Error executing scheduled task:', error);
