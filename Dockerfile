@@ -5,20 +5,29 @@ FROM node:16.20.2
 RUN apt -y update && apt -y upgrade && apt -y install git net-tools vim
 
 # 작업 디렉토리 설정
-# WORKDIR '/root'
-
-# 애플리케이션의 zip파일
-# COPY server.tar.gz .
+WORKDIR '/root'
 
 # 의존성 설치
-# RUN tar xvzf server.tar.gz
-WORKDIR '/root/server'
-COPY server/ .
+RUN git clone https://github.com/wjdguswn1203/PaperTechTrend
+WORKDIR '/root/PaperTechTrend'
 RUN npm install
 RUN npm install -g nodemon
 
 # 애플리케이션이 실행될 포트 설정
 EXPOSE 8000
+
+# 애플리케이션 시작 명령어
+CMD [ "nodemon", "app.js" ]
+
+# 다른 git 가져오기
+WORKDIR '/root'
+RUN git clone https://github.com/raminicano/PaperTechTrend
+WORKDIR '/root/PaperTechTrend'
+RUN npm install
+RUN npm install -g nodemon
+
+# 애플리케이션이 실행될 포트 설정
+EXPOSE 8500
 
 # 애플리케이션 시작 명령어
 CMD [ "nodemon", "app.js" ]

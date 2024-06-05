@@ -15,12 +15,17 @@ const PORT = process.env.PORT || 8000;
 const FASTAPI_HJ = process.env.FASTAPI_HJ;
 const FASTAPI_YJ = process.env.FASTAPI_YJ;
 
+const DB_HOST = process.env.DB_HOST;
+const DB_USER = process.env.DB_USER;
+const DB_PASSWORD = process.env.DB_PASSWORD;
+const DB_NAME = process.env.DB_NAME;
+
 // DB CONNECT
 const connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
+    host: DB_HOST,
+    user: DB_USER,
+    password: DB_PASSWORD,
+    database: DB_NAME
   });
 
 connection.connect(error => {
