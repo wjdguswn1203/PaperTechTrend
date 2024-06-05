@@ -8,8 +8,8 @@ RUN apt -y update && apt -y upgrade && apt -y install git net-tools vim
 WORKDIR '/root'
 
 # 의존성 설치
-RUN git clone https://github.com/wjdguswn1203/PaperTechTrend
-WORKDIR '/root/PaperTechTrend'
+RUN git clone https://github.com/wjdguswn1203/PaperTechTrend ptt1
+WORKDIR '/root/ptt1'
 RUN npm install
 RUN npm install -g nodemon
 
@@ -21,8 +21,8 @@ CMD [ "nodemon", "app.js" ]
 
 # 다른 git 가져오기
 WORKDIR '/root'
-RUN git clone https://github.com/raminicano/PaperTechTrend
-WORKDIR '/root/PaperTechTrend'
+RUN git clone https://github.com/raminicano/PaperTechTrend ptt2
+WORKDIR '/root/ptt2'
 RUN npm install
 RUN npm install -g nodemon
 

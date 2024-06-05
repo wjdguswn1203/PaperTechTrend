@@ -11,9 +11,11 @@ const app = express();
 // post 방식 사용 시 JSON 본문을 파싱할 수 있게 하는 처리
 app.use(express.json());
 
-const PORT = process.env.PORT || 8000;
-const FASTAPI_HJ = process.env.FASTAPI_HJ;
-const FASTAPI_YJ = process.env.FASTAPI_YJ;
+const PORT1 = process.env.PORT1;
+const PORT2 = process.env.PORT2;
+
+const FASTAPI_URL1 = process.env.FASTAPI_URL1;
+const FASTAPI_URL2 = process.env.FASTAPI_URL2;
 
 const DB_HOST = process.env.DB_HOST;
 const DB_USER = process.env.DB_USER;
@@ -87,7 +89,7 @@ app.get('/search', async (req, res) => {
 app.get('/searchColl', async (req, res) => {
     try {
         const searchWord = req.query.searchword;
-        const getColaResponse = await axios.get(`http://${FASTAPI_HJ}:3000/getColl?searchword=${searchWord}`);
+        const getColaResponse = await axios.get(`http://${FASTAPI_URL2}:3000/getColl?searchword=${searchWord}`);
         const collData = getColaResponse.data;
 
         // 결과 렌더링
@@ -102,7 +104,7 @@ app.get('/searchColl', async (req, res) => {
 
 app.get('/savePopularKeyword', async (req, res) => {
     try {
-        const response = await axios.get(`http://${FASTAPI_HJ}:3000/searchPopularkeyord`);
+        const response = await axios.get(`http://${FASTAPI_URL2}:3000/searchPopularkeyord`);
         const data = response.data.data; 
 
         const keywords = data.map(item => item.keyword);
@@ -189,8 +191,8 @@ schedule.scheduleJob('0 0 * * *', async () => {
     }
 });
 
-app.listen(PORT, () => {
-console.log(`Server is running on port ${PORT}`);
+app.listen(PORT2, () => {
+console.log(`Server is running on port ${PORT2}`);
 });
 
 
