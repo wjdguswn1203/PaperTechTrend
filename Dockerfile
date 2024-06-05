@@ -24,4 +24,5 @@ RUN npm install -g nodemon
 EXPOSE 8000 8500
 
 # 애플리케이션 시작 명령어
-CMD nodemon /root/ptt1/server/app.js & nodemon /root/ptt2/app.js
+RUN PORT=8000 nodemon /root/ptt1/server/app.js &
+RUN PORT=8500 nodemon /root/ptt2/app.js &

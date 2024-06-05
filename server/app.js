@@ -11,11 +11,16 @@ const app = express();
 // post 방식 사용 시 JSON 본문을 파싱할 수 있게 하는 처리
 app.use(express.json());
 
-const PORT1 = process.env.PORT1;
-const PORT2 = process.env.PORT2;
+app.set('port', process.env.PORT2 || 8000)
+
+const PORT1 = process.env.PORT1 || 8500;
+const PORT2 = process.env.PORT2 || 8000;
 
 const FASTAPI_URL1 = process.env.FASTAPI_URL1;
 const FASTAPI_URL2 = process.env.FASTAPI_URL2;
+
+const NODE_URL1 = process.env.NODE_URL1;
+const NODE_URL2 = process.env.NODE_URL2;
 
 const DB_HOST = process.env.DB_HOST;
 const DB_USER = process.env.DB_USER;
@@ -57,7 +62,7 @@ app.get('/search', async (req, res) => {
     // 키워드 기반 검색
     if (searchType === 'keyword') {
         try {
-            const response = await axios.get(`http://localhost:8500/searchKeyword?type=${searchType}&searchword=${searchWord}`);
+            const response = await axios.get(`${FASTAPI_URL1}/searchKeyword?type=${searchType}&searchword=${searchWord}`);
             res.render('search.ejs', response.data);
         } catch (error) {
             console.error(error);
@@ -69,7 +74,7 @@ app.get('/search', async (req, res) => {
     // 구어체 기반 검색
     else if (searchType === 'sentence') {
         try {
-            const response = await axios.get(`http://localhost:8000/searchColl?type=${searchType}&searchword=${searchWord}`);
+            const response = await axios.get(`${FASTAPI_URL2}/searchColl?type=${searchType}&searchword=${searchWord}`);
             res.render('search.ejs', response.data);
         } catch (error) {
             console.error(error);
@@ -110,7 +115,7 @@ app.get('/savePopularKeyword', async (req, res) => {
         const keywords = data.map(item => item.keyword);
         
         // saveRDS를 호출하여 데이터 저장
-        await axios.post('http://localhost:8000/saveRDS', { data });
+        await axios.post(`${NODE_URL2}/saveRDS`, { data });
 
         res.json({"resultCode" : 200, keywords });
     } catch (error) {
@@ -184,7 +189,7 @@ app.get('/selectRDS', async (req, res) => {
 // 하루마다 갱신하기
 schedule.scheduleJob('0 0 * * *', async () => {
     try {
-        await axios.get('http://localhost:8000/savePopularKeyword');
+        await axios.get(`${FASTAPI_URL2}/savePopularKeyword`);
         console.log('Scheduled task executed successfully');
     } catch (error) {
         console.error('Error executing scheduled task:', error);
