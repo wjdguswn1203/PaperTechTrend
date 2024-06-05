@@ -25,8 +25,8 @@ client = weaviate.connect_to_wcs(
     skip_init_checks=True
 )
 
-FASTAPI_HJ = os.getenv('FASTAPI_HJ')
-FASTAPI_YJ = os.getenv('FASTAPI_YJ')
+FASTAPI_URL1 = os.getenv('FASTAPI_URL1')
+FASTAPI_URL2 = os.getenv('FASTAPI_URL2')
 
 # Database connection settings
 DB_USER = os.getenv('DB_USER')
@@ -139,7 +139,7 @@ async def search_popular_keyword():
     results = []
     for keyword in new_keywords:
         try:
-            keyword_response = requests.get(f'http://{FASTAPI_YJ}:3500/getMeta?searchword={keyword}')
+            keyword_response = requests.get(f'http://{FASTAPI_URL1}:3500/getMeta?searchword={keyword}')
             keyword_data = keyword_response.json()
             results.append({'keyword': keyword, 'length': len(keyword_data)})
         except Exception as e:
