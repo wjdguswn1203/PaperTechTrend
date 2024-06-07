@@ -3,7 +3,7 @@ const axios = require('axios');
 var mysql = require('mysql');
 const schedule = require('node-schedule');
 
-//const env = require('dotenv').config({ path: "./.env" });
+// const env = require('dotenv').config({ path: "../.env" });
 
 const path = require('path');
 const { log } = require('console');
