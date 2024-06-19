@@ -10,7 +10,7 @@ documents = SimpleDirectoryReader('data').load_data()
 print('Documents loaded successfully')
 
 # 요약 모델 초기화
-summarization_pipe = pipeline("summarization", model="jordiclive/flan-t5-3b-summarizer")
+summarization_pipe = pipeline("summarization", model="Falconsai/text_summarization")
 print('Summarization model initialized successfully')
 
 # 임베딩 모델 초기화
