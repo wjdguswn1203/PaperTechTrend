@@ -7,22 +7,22 @@ from sqlalchemy import create_engine, exists
 from sqlalchemy.orm import sessionmaker
 from models import Collection
 from dotenv import load_dotenv
-import weaviate
+# import weaviate
 
 
 load_dotenv(os.path.join(os.path.dirname(__file__), '../.env'))
 
 # weaviate api 가져오기
-URL = os.getenv("WCS_URL")
-APIKEY = os.getenv("WCS_API_KEY")
-HUGGING = os.getenv("HUGGINGFACE_APIKEY")
+# URL = os.getenv("WCS_URL")
+# APIKEY = os.getenv("WCS_API_KEY")
+# HUGGING = os.getenv("HUGGINGFACE_APIKEY")
 
-client = weaviate.connect_to_wcs(
-    cluster_url=URL,
-    auth_credentials=weaviate.auth.AuthApiKey(APIKEY),
-    headers={'X-HuggingFace-Api-Key': HUGGING},
-    skip_init_checks=True
-)
+# client = weaviate.connect_to_wcs(
+#     cluster_url=URL,
+#     auth_credentials=weaviate.auth.AuthApiKey(APIKEY),
+#     headers={'X-HuggingFace-Api-Key': HUGGING},
+#     skip_init_checks=True
+# )
 
 FASTAPI_URL1 = os.getenv('FASTAPI_URL1')
 FASTAPI_URL2 = os.getenv('FASTAPI_URL2')
@@ -46,24 +46,24 @@ async def health_check():
 
 # 구어체 기반 weaviate 검색 
 # searchword = 'Why Deepfake Videos Are Really Visible'
-@app.get('/getColl')
-async def getColl(searchword: str):
-    result = []
-    # print(searchword)
-    result = []
-    questions  = client.collections.get("Paper")
-    response = questions.query.near_text(
-        query=searchword,
-        limit=10
-    )
-    res = []
-    # 오브젝트가 있으면
-    if response.objects:
-        for object in response.objects:
-            res.append(object.properties) # 반환 데이터에 추가
-        return {"resultCode" : 200, "data" : res}
-    else:
-        return {"resultCode" : 404, "data" : response}
+# @app.get('/getColl')
+# async def getColl(searchword: str):
+#     result = []
+#     # print(searchword)
+#     result = []
+#     questions  = client.collections.get("Paper")
+#     response = questions.query.near_text(
+#         query=searchword,
+#         limit=10
+#     )
+#     res = []
+#     # 오브젝트가 있으면
+#     if response.objects:
+#         for object in response.objects:
+#             res.append(object.properties) # 반환 데이터에 추가
+#         return {"resultCode" : 200, "data" : res}
+#     else:
+#         return {"resultCode" : 404, "data" : response}
 
 
 @app.get('/dbpiasearch')
@@ -125,31 +125,30 @@ def filter_keywords(keywords):
 def keyword_exists(db_session, keyword):
     return db_session.query(exists().where(Collection.searchword == keyword)).scalar()
 
-@app.get('/searchPopularkeyord')
-async def search_popular_keyword():
-    # dbpia API에서 인기있는 검색어 가져오기
-    response = await get_trend_keywords()
-    keywords = response.get("keywords", [])
-    db = SessionLocal()
+# @app.get('/searchPopularkeyord')
+# async def search_popular_keyword():
+#     # dbpia API에서 인기있는 검색어 가져오기
+#     response = await get_trend_keywords()
+#     keywords = response.get("keywords", [])
+#     db = SessionLocal()
     
-    # 새 키워드만 가져오기
-    new_keywords = [keyword for keyword in keywords if not keyword_exists(db, keyword)]
+#     # 새 키워드만 가져오기
+#     new_keywords = [keyword for keyword in keywords if not keyword_exists(db, keyword)]
+#     results = []
+#     for keyword in new_keywords:
+#         try:
+#             keyword_response = requests.get(f'{FASTAPI_URL1}/getMeta?searchword={keyword}')
+#             keyword_data = keyword_response.json()
+#             results.append({'keyword': keyword, 'length': len(keyword_data)})
+#         except Exception as e:
+#             print(f'Error fetching data for keyword: {keyword}', e)
+#             results.append({'keyword': keyword, 'length': 0})
 
-    results = []
-    for keyword in new_keywords:
-        try:
-            keyword_response = requests.get(f'{FASTAPI_URL1}/getMeta?searchword={keyword}')
-            keyword_data = keyword_response.json()
-            results.append({'keyword': keyword, 'length': len(keyword_data)})
-        except Exception as e:
-            print(f'Error fetching data for keyword: {keyword}', e)
-            results.append({'keyword': keyword, 'length': 0})
-
-    db.close()
+#     db.close()
     
-    if results:
-        return {"resultCode" : 200, "data" : results}
-    else:
-        return {"resultCode" : 404, "data" : results}
+#     if results:
+#         return {"resultCode" : 200, "data" : results}
+#     else:
+#         return {"resultCode" : 404, "data" : results}
 
 
