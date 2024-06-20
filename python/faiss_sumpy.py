@@ -12,12 +12,14 @@ import warnings
 warnings.filterwarnings("ignore", category=FutureWarning, module='huggingface_hub')
 
 # 문서 데이터 로드
-async def data_load():
-    documents = SimpleDirectoryReader('data').load_data()
+def data_load(texts):
+    # texts는 문자열의 리스트로 가정
+    documents = [{'text': text} for text in texts]
     print('Documents loaded successfully')
+    return documents
     
 # 요약 후 벡터화 및 Faiss 인덱스에 추가
-async def summarize(documents):
+def summarize(documents):
 
     # 요약 모델 초기화
     summarization_pipe = pipeline("summarization", model="Falconsai/text_summarization")
@@ -36,7 +38,7 @@ async def summarize(documents):
 
     for doc in documents:
         # 문서 내용 요약
-        summary = summarization_pipe(doc.text, max_length=150, min_length=30, do_sample=False)[0]['summary_text']
+        summary = summarization_pipe(doc['text'], max_length=150, min_length=30, do_sample=False)[0]['summary_text']
         print(f"Original Text: {doc.text[:200]}...")  # 처음 200자만 출력
         print(f"Summary: {summary}\n")
 

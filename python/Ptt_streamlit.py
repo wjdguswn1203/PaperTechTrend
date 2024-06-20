@@ -7,7 +7,7 @@ import textwrap
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning, module='huggingface_hub')
 
-async def summarize_PDF_file(pdf_file, model):
+def summarize_PDF_file(pdf_file, model):
 
     text_summaries = []
 
@@ -15,15 +15,17 @@ async def summarize_PDF_file(pdf_file, model):
         st.write("PDF 문서를 요약 중입니다. 잠시만 기다려 주세요.")
         # reader = await fs.data_load()
         if model == "hf":
-            page_text = fs.data_load(pdf_file)
-            text_summary = fs.summarize(page_text)
-            text_summaries.append(text_summary)
+            reader = PdfReader(pdf_file)
+            for page in reader.pages:
+                page_text = page.extract_text()
+            documents = fs.data_load(page_text)
+            text_summary = fs.summarize(documents)
         else:
             print("구현중")
     else:
         st.write("PDF 파일를 업로드하세요.")
 
-    st.write(text_summaries) # <-- text_summaries
+    st.write(text_summary) # <-- text_summaries
 
             
 
@@ -47,3 +49,6 @@ else:
     st.write("OpenAI 구상 중")
 
 clicked_sum_model = st.button('PDF 문서 요약')
+
+if clicked_sum_model:
+    summarize_PDF_file(upload_file, model)
