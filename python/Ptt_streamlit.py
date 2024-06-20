@@ -8,6 +8,9 @@ import warnings
 warnings.filterwarnings("ignore", category=FutureWarning, module='huggingface_hub')
 
 async def summarize_PDF_file(pdf_file, model):
+
+    text_summaries = []
+
     if (pdf_file is not None):
         st.write("PDF 문서를 요약 중입니다. 잠시만 기다려 주세요.")
         # reader = await fs.data_load()
