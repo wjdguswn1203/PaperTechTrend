@@ -9,20 +9,7 @@ from models import Collection
 from dotenv import load_dotenv
 # import weaviate
 
-
 load_dotenv(os.path.join(os.path.dirname(__file__), '../.env'))
-
-# weaviate api 가져오기
-# URL = os.getenv("WCS_URL")
-# APIKEY = os.getenv("WCS_API_KEY")
-# HUGGING = os.getenv("HUGGINGFACE_APIKEY")
-
-# client = weaviate.connect_to_wcs(
-#     cluster_url=URL,
-#     auth_credentials=weaviate.auth.AuthApiKey(APIKEY),
-#     headers={'X-HuggingFace-Api-Key': HUGGING},
-#     skip_init_checks=True
-# )
 
 FASTAPI_URL1 = os.getenv('FASTAPI_URL1')
 FASTAPI_URL2 = os.getenv('FASTAPI_URL2')
