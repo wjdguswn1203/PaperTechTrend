@@ -5,7 +5,15 @@ from PyPDF2 import PdfReader
 import tiktoken
 import textwrap
 import warnings
+import requests
+from dotenv import load_dotenv
+
+load_dotenv(os.path.join(os.path.dirname(__file__), '../.env'))
 warnings.filterwarnings("ignore", category=FutureWarning, module='huggingface_hub')
+
+FASTAPI_URL1 = os.getenv('FASTAPI_URL1')
+FASTAPI_URL2 = os.getenv('FASTAPI_URL2')
+FASTAPI_URL3 = os.getenv('FASTAPI_URL3')
 
 def summarize_PDF_file(pdf_file, model):
 
@@ -13,19 +21,26 @@ def summarize_PDF_file(pdf_file, model):
 
     if (pdf_file is not None):
         st.write("PDF 문서를 요약 중입니다. 잠시만 기다려 주세요.")
+        # PDF 파일을 바이트 스트림으로 읽기
+        file_bytes = pdf_file.read()
         # reader = await fs.data_load()
+            # 파일을 다른 서버에 전송
+        url = f"{FASTAPI_URL3}/upload"
+        headers = {"Content-Type": "application/pdf"}
+        response = requests.post(url, data=file_bytes, headers=headers)
+        print("ok")
+        st.write(headers)
         if model == "hf":
-            reader = PdfReader(pdf_file)
-            for page in reader.pages:
-                page_text = page.extract_text()
-            documents = fs.data_load(page_text)
-            text_summary = fs.summarize(documents)
+            st.write(pdf_file)
+
+            # documents = fs.data_load(page_text)
+            # text_summary = fs.summarize(documents)
         else:
             print("구현중")
     else:
         st.write("PDF 파일를 업로드하세요.")
 
-    st.write(text_summary) # <-- text_summaries
+    # st.write(text_summary)
 
             
 
