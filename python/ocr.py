@@ -60,7 +60,7 @@ if uploaded_file is not None:
     text = textract.process(temp_file_path)
     text = text.decode('utf-8')  # 바이트 문자열을 유니코드 문자열로 변환
 
-    # 세 개 이상의 연속된 공백 문자를 단락 구분자로 사용하여 텍스트를 단락으로 분할
+    # 2 개 이상의 연속된 공백 문자를 단락 구분자로 사용하여 텍스트를 단락으로 분할
     paragraphs = re.split(r'\s{2,}', text)
 
     # 짧은 단락들을 전 단락과 병합
