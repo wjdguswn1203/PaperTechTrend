@@ -2,8 +2,8 @@ import streamlit as st
 import textract
 import re
 import tempfile
-from ocr_summarizer import summarize, summarize_paragraph
-import asyncio
+from ocr_summarizer import summarize_paragraph
+import concurrent.futures
 
 st.title('Paragraph Extraction and Summarization from PDF')
 
