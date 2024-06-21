@@ -13,8 +13,7 @@ warnings.filterwarnings("ignore", category=FutureWarning, module='huggingface_hu
 
 # 문서 데이터 로드
 def data_load(texts):
-    # texts는 문자열의 리스트로 가정
-    documents = [{'text': text} for text in texts]
+    documents = {'text': texts}
     print('Documents loaded successfully')
     return documents
     
@@ -36,16 +35,16 @@ def summarize(documents):
     service_context = ServiceContext.from_defaults(embed_model=embed_model)
     print("Faiss Index and Vector Store initialized successfully")
 
-    for doc in documents:
-        # 문서 내용 요약
-        summary = summarization_pipe(doc['text'], max_length=150, min_length=30, do_sample=False)[0]['summary_text']
-        print(f"Original Text: {doc.text[:200]}...")  # 처음 200자만 출력
-        print(f"Summary: {summary}\n")
+    # 문서 내용 요약
+    summary = summarization_pipe(documents['text'], max_length=150, min_length=30, do_sample=False)[0]['summary_text']
+    print(f"Summary: {summary}\n")
 
-        # 요약된 내용을 벡터로 변환
-        vector = embed_model.encode([summary])  # 요약된 텍스트를 벡터로 변환, 리스트로 감싸서 처리
-        vector = np.array(vector, dtype='float32')  # numpy 배열로 변환
-        faiss_index.add(vector)  # 벡터를 Faiss 인덱스에 추가
+    # 요약된 내용을 벡터로 변환
+    vector = embed_model.encode([summary])  # 요약된 텍스트를 벡터로 변환, 리스트로 감싸서 처리
+    vector = np.array(vector, dtype='float32')  # numpy 배열로 변환
+    faiss_index.add(vector)  # 벡터를 Faiss 인덱스에 추가
 
     print('Summarized vectors added to Faiss Index successfully')
+
+    return summary
 

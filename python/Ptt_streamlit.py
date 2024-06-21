@@ -1,7 +1,6 @@
 import faiss_sumpy as fs
 import streamlit as st
 import os
-from PyPDF2 import PdfReader
 import tiktoken
 import textwrap
 import warnings
@@ -23,18 +22,17 @@ def summarize_PDF_file(pdf_file, model):
         st.write("PDF 문서를 요약 중입니다. 잠시만 기다려 주세요.")
         # PDF 파일을 바이트 스트림으로 읽기
         file_bytes = pdf_file.read()
-        # reader = await fs.data_load()
-            # 파일을 다른 서버에 전송
         url = f"{FASTAPI_URL3}/upload"
         headers = {"Content-Type": "application/pdf"}
         response = requests.post(url, data=file_bytes, headers=headers)
-        print("ok")
-        st.write(headers)
+        print("pdf sended")
+        if response.status_code == 200:
+            texts = response.json().get("text", "")
+            st.write("파일이 성공적으로 전송되었습니다.")
         if model == "hf":
-            st.write(pdf_file)
-
-            # documents = fs.data_load(page_text)
-            # text_summary = fs.summarize(documents)
+            documents = fs.data_load(texts)
+            text_summary = fs.summarize(documents)
+            st.write("요약 텍스트: ", text_summary)
         else:
             print("구현중")
     else:
