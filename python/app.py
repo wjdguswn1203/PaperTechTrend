@@ -2,12 +2,26 @@ import requests
 import os
 import re
 from bs4 import BeautifulSoup
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from sqlalchemy import create_engine, exists
 from sqlalchemy.orm import sessionmaker
 from models import Collection
 from dotenv import load_dotenv
 # import weaviate
+
+# streamlit app.py
+from typing import List
+from pydantic import BaseModel
+import warnings
+import numpy as np
+from transformers import pipeline
+from sentence_transformers import SentenceTransformer
+from concurrent.futures import ThreadPoolExecutor
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+import torch
+
+# 경고 메시지 무시
+warnings.filterwarnings("ignore", category=FutureWarning, module='huggingface_hub')
 
 load_dotenv(os.path.join(os.path.dirname(__file__), '../.env'))
 
@@ -27,9 +41,43 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 app = FastAPI()
 
+# 2. Hugging Face 요약 모델 설정
+model_name = "facebook/bart-large-cnn"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+
+# cuda == gpu
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model.to(device)
+
 @app.get('/')
 async def health_check():
     return "OK"
+
+@app.post('/summarize')
+async def summarize(request: Request):
+    body = await request.json()
+    split_texts = body.get("texts", [])
+    summaries = []
+    with ThreadPoolExecutor(max_workers=3) as executor:
+        futures = [executor.submit(summarize_paragraph, paragraph) for paragraph in split_texts]
+        for future in futures:
+            summaries.append(future.result())
+    if summaries:
+        return {"resultCode" : 200, "data" : summaries}
+    else:
+        return {"resultCode" : 404, "data" : summaries}
+    
+def summarize_paragraph(paragraph):
+    try:
+        inputs = tokenizer(paragraph, return_tensors="pt", max_length=1024, truncation=True).to(device)
+        summary_ids = model.generate(inputs["input_ids"], max_length=512, min_length=30, length_penalty=2.0, num_beams=4, early_stopping=True)
+        summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+        print(f"Summary is okey\n")
+        return summary
+    except Exception as e:
+        print(f"Error summarizing paragraph: {e}")
+        return paragraph
 
 # 구어체 기반 weaviate 검색 
 # searchword = 'Why Deepfake Videos Are Really Visible'
