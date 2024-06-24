@@ -57,13 +57,20 @@ async def health_check():
 @app.post('/summarize')
 async def summarize(request: Request):
     body = await request.json()
+    title = body.get("title", "")
     split_texts = body.get("texts", [])
+
     summaries = []
-    with ThreadPoolExecutor(max_workers=3) as executor:
+    
+    with ThreadPoolExecutor(max_workers=4) as executor:
         futures = [executor.submit(summarize_paragraph, paragraph) for paragraph in split_texts]
         for future in futures:
             summaries.append(future.result())
     if summaries:
+        url = f"{FASTAPI_URL1}/saveSummary1"
+        summaries_string = "\n".join(summaries)
+        save_sum = requests.post(url, json={"title": title,"text": summaries_string})
+        print(save_sum)
         return {"resultCode" : 200, "data" : summaries}
     else:
         return {"resultCode" : 404, "data" : summaries}
