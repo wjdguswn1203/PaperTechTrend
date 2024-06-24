@@ -62,10 +62,17 @@ async def summarize(request: Request):
 
     summaries = []
     
-    with ThreadPoolExecutor(max_workers=4) as executor:
-        futures = [executor.submit(summarize_paragraph, paragraph) for paragraph in split_texts]
-        for future in futures:
-            summaries.append(future.result())
+    # summary 존재 여부 확인
+    get_summary = requests.get(f"{FASTAPI_URL1}/getSummary1?title={title}")
+    res = get_summary.json().get("resultCode", "")
+    if res == 200:
+        res = get_summary.json().get("data", "")
+        summaries = res.split("\n")
+    else:
+        with ThreadPoolExecutor(max_workers=3) as executor:
+            futures = [executor.submit(summarize_paragraph, paragraph) for paragraph in split_texts]
+            for future in futures:
+                summaries.append(future.result())
     if summaries:
         url = f"{FASTAPI_URL1}/saveSummary1"
         summaries_string = "\n".join(summaries)
