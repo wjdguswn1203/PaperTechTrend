@@ -10,15 +10,13 @@ from dotenv import load_dotenv
 # import weaviate
 
 # streamlit app.py
-from typing import List
-from pydantic import BaseModel
 import warnings
-import numpy as np
-from transformers import pipeline
-from sentence_transformers import SentenceTransformer
 from concurrent.futures import ThreadPoolExecutor
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torch
+from datetime import datetime
+from langchain.text_splitter import CharacterTextSplitter
+import concurrent.futures
 
 # 경고 메시지 무시
 warnings.filterwarnings("ignore", category=FutureWarning, module='huggingface_hub')
@@ -58,10 +56,20 @@ async def health_check():
 async def summarize(request: Request):
     body = await request.json()
     title = body.get("title", "")
-    split_texts = body.get("texts", [])
+    texts = body.get("texts", [])
+
+    # 스플리터 지정
+    text_splitter = CharacterTextSplitter.from_tiktoken_encoder(
+        separator="\\n\\n",  # 분할 기준
+        chunk_size=2000,   # 청크 사이즈
+        chunk_overlap=100, # 중첩 사이즈
+    )
+
+    split_texts = text_splitter.split_text(texts)
 
     summaries = []
-    
+    # 요청 보내기 전의 시간 기록
+    bart_start_time = datetime.now()
     # summary 존재 여부 확인
     get_summary = requests.get(f"{FASTAPI_URL1}/getSummary1?title={title}")
     res = get_summary.json().get("resultCode", "")
@@ -73,14 +81,18 @@ async def summarize(request: Request):
             futures = [executor.submit(summarize_paragraph, paragraph) for paragraph in split_texts]
             for future in futures:
                 summaries.append(future.result())
+    # 요청 받아온 시간 기록
+    bart_end_time = datetime.now()
+    bart_time = int((bart_end_time - bart_start_time).seconds)
     if summaries:
         url = f"{FASTAPI_URL1}/saveSummary1"
         summaries_string = "\n".join(summaries)
+        print(bart_time)
         save_sum = requests.post(url, json={"title": title,"text": summaries_string})
-        print(save_sum)
-        return {"resultCode" : 200, "data" : summaries}
+        save_time = requests.get(f"{FASTAPI_URL1}/saveTime1?title={title}&time={bart_time}")
+        return {"resultCode" : 200, "data" : summaries, "bart_time" : bart_time}
     else:
-        return {"resultCode" : 404, "data" : summaries}
+        return {"resultCode" : 404, "data" : summaries, "bart_time" : bart_time}
     
 def summarize_paragraph(paragraph):
     try:
