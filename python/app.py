@@ -89,7 +89,11 @@ async def summarize(request: Request):
         summaries_string = "\n".join(summaries)
         print(bart_time)
         save_sum = requests.post(url, json={"title": title,"text": summaries_string})
-        save_time = requests.get(f"{FASTAPI_URL1}/saveTime1?title={title}&time={bart_time}")
+        get_time = requests.get(f"{FASTAPI_URL1}/getTime1?title={title}").json().get("resultCode", 0)
+        if get_time == 200:
+            bart_time = int(requests.get(f"{FASTAPI_URL1}/getTime1?title={title}").json().get("data", 0))
+        else:
+            save_time = requests.get(f"{FASTAPI_URL1}/saveTime1?title={title}&time={bart_time}")
         return {"resultCode" : 200, "data" : summaries, "bart_time" : bart_time}
     else:
         return {"resultCode" : 404, "data" : summaries, "bart_time" : bart_time}
