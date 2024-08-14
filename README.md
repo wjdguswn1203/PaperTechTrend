@@ -101,3 +101,84 @@
 <br/>
 <br/>
 <br/>
+
+
+# 📂 PaperTechTrend Stramlit 프로젝트 소개
+- 기존 PaperTechTrend을 업데이트 하기 전에 OCR로 PDF를 인식하여 해당 텍스트를 단락별로 나누어 요약. 요약시간과 키워드간의 매칭도를 통해 요약 모델을 비교하는 프로젝트
+
+<br/>
+<br/>
+
+## 🎥 구현 화면
+## 메인 페이지
+
+
+<br/>
+<br/>
+
+
+
+# 👥 팀원 소개
+
+| <img width="250" alt="hj" src="https://github.com/user-attachments/assets/c0af7daa-f81b-4527-b62b-f9ee8d23e311"> | <img width="250" alt="yj" src="https://github.com/user-attachments/assets/bee1516f-d25d-46af-8cee-2771a4d9c917"> | <img width="250" alt="jh" src="https://github.com/user-attachments/assets/0c08e694-5ca3-446a-8af9-e7441b83553f"> |
+| --- | --- | --- |
+| 🐼[정현주](https://github.com/wjdguswn1203)🐼 | 🐱[송윤주](https://github.com/raminicano)🐱 | 🐶[신지현](https://github.com/sinzng)🐶 |
+
+<br/>
+<br/>
+
+
+
+<br/>
+<br/>
+
+# 📝 기능
+
+
+
+<br/>
+<br/>
+
+# 🏆 기술 스택
+## Programming language
+
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"/> <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
+<br/>
+
+
+## Library & Framework
+
+<img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white"/> 
+<br/>
+
+## Server & deploy
+
+<img src="https://img.shields.io/badge/AWS_EC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"/> <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"/>
+
+<br/>
+
+## Database
+
+<img src="https://img.shields.io/badge/AWS_RDS-527FFF?logo=amazonrds&logoColor=fff&style=for-the-badge"> <img src="https://img.shields.io/badge/weaviate-6EBE49?style=for-the-badge"/>
+
+<br/>
+
+## API
+
+<img src="https://img.shields.io/badge/arXiv-B31B1B?logo=arxiv&logoColor=fff&style=for-the-badge"> <img src="https://img.shields.io/badge/DBpia-F40D12?style=for-the-badge"/>
+
+<br/>
+
+## Version Control System
+<img alt="github" src="https://img.shields.io/badge/Github-000000?style=for-the-badge&logo=github&logoColor=white"> 
+<br/>
+
+
+## Communication Tool
+
+<img alt="notion" src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white"> <img alt="kakao" src="https://img.shields.io/badge/KakaoTalk-FFCD00?style=for-the-badge&logo=kakao&logoColor=black"> 
+
+
+<br/>
+<br/>
+<br/>
