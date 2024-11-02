@@ -20,9 +20,6 @@
 <br/>
 <br/>
 
-## ✅ 추진 배경
-![image](https://github.com/user-attachments/assets/a4500b9b-1812-47ec-9c5f-ad6c804b7b25)
-
 
 
 # 👥 팀원 소개
